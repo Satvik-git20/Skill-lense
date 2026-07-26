@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SocialHub — A simple social network</title>
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --card:#17171c;
+      --muted:#9aa0a6;
+      --primary:#3b82f6;
+      --text:#e5e7eb;
+      --border:#26262b;
+      --success:#22c55e;
+      --danger:#ef4444;
+      --warning:#f59e0b;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    /* Header */
+    .header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:12px 20px;
+      background:rgba(23,23,28,0.9);
+      backdrop-filter:saturate(1.2) blur(8px);
+      border-bottom:1px solid var(--border);
+    }
+    .logo{
+      display:flex; align-items:center; gap:8px; font-weight:700;
+    }
+    .logo-badge{
+      height:28px; width:28px; border-radius:8px; 
+      background:linear-gradient(135deg,var(--primary),#9333ea);
+      display:grid; place-items:center; color:white; font-size:16px;
+    }
+    .search{
+      flex:1; max-width:560px; position:relative;
+    }
+    .search input{
+      width:100%; padding:10px 36px 10px 12px; border-radius:10px; 
+      border:1px solid var(--border); background:#121217; color:var(--text);
+      outline:none;
+    }
+    .search button{
+      position:absolute; right:6px; top:50%; transform:translateY(-50%);
+      border:none; background:var(--primary); color:white; padding:8px 12px; border-radius:8px; cursor:pointer;
+    }
+    .actions{display:flex; gap:10px}
+    .btn{
+      padding:8px 12px; border:1px solid var(--border); background:#121217; color:var(--text);
+      border-radius:8px; cursor:pointer;
+    }
+    .btn.primary{background:var(--primary); border-color:transparent}
+
+    /* Layout */
+    .layout{
+      display:grid;
+      grid-template-columns: 280px minmax(0, 1fr) 320px;
+      gap:20px;
+      padding:20px;
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    /* Cards */
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .card-header{
+      padding:14px 16px; border-bottom:1px solid var(--border); font-weight:600;
+    }
+    .card-body{padding:16px}
+    .divider{height:1px; background:var(--border); margin:12px 0}
+
+    /* Sidebar left */
+    .sidebar .nav{
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .nav a{
+      display:flex; align-items:center; gap:10px; padding:10px; border-radius:10px; color:var(--text); text-decoration:none;
+    }
+    .nav a:hover{background:#121217}
+
+    /* Composer */
+    .composer{
+      display:flex; gap:12px;
+    }
+    .avatar{
+      height:44px; width:44px; border-radius:50%; background:#222; display:grid; place-items:center; font-weight:700;
+      border:1px solid var(--border);
+    }
+    .composer textarea{
+      flex:1; min-height:72px; resize:vertical; max-height:200px;
+      padding:10px; border-radius:12px; border:1px solid var(--border); background:#121217; color:var(--text);
+      outline:none;
+    }
+    .composer-actions{
+      display:flex; justify-content:space-between; align-items:center; margin-top:12px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px dashed var(--border);
+      color:var(--muted);
+    }
+
+    /* Post */
+    .post{padding:16px}
+    .post + .post{border-top:1px solid var(--border)}
+    .post-header{display:flex; gap:10px; align-items:center}
+    .post-name{font-weight:700}
+    .post-meta{color:var(--muted); font-size:12px}
+    .post-content{margin:10px 0; white-space:pre-wrap}
+    .post-media img{width:100%; border-radius:12px; border:1px solid var(--border)}
+    .post-actions{
+      display:flex; gap:8px; margin-top:10px;
+    }
+    .icon-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:10px; border:1px solid var(--border);
+      background:#121217; color:var(--text); cursor:pointer;
+    }
+    .icon-btn.active{border-color:var(--primary); color:var(--primary);}
+
+    /* Comments */
+    .comments{margin-top:12px; padding-left:54px}
+    .comment{display:flex; gap:10px; margin:8px 0}
+    .comment .bubble{
+      background:#141419; border:1px solid var(--border); padding:8px 10px; border-radius:12px;
+    }
+    .comment .author{font-weight:600}
+    .add-comment{display:flex; gap:8px; align-items:center; margin-top:8px}
+    .add-comment input{
+      flex:1; padding:8px 10px; border-radius:12px; border:1px solid var(--border); background:#121217; color:var(--text);
+      outline:none;
+    }
+
+    /* Right column: contacts */
+    .contacts .item{
+      display:flex; align-items:center; justify-content:space-between; padding:10px; border-bottom:1px solid var(--border);
+    }
+    .presence{height:10px; width:10px; border-radius:50%}
+    .presence.online{background:var(--success)}
+    .presence.busy{background:var(--danger)}
+    .presence.away{background:var(--warning)}
+
+    /* Feed filters */
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .filters .btn{padding:6px 10px}
+
+    /* Responsive */
+    @media (max-width: 1024px){
+      .layout{grid-template-columns: 1fr}
+      .sidebar, .contacts{display:none}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-badge">S</div>
+      <span>SocialHub</span>
+    </div>
+    <div class="search">
+      <input type="search" placeholder="Search posts, people, groups..."/>
+      <button id="searchBtn">Search</button>
+    </div>
+    <div class="actions">
+      <button class="btn">Profile</button>
+      <button class="btn">Settings</button>
+      <button class="btn primary">Log in</button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <main class="layout">
+
+    <!-- Left sidebar -->
+    <aside class="sidebar card">
+      <div class="card-header">Navigation</div>
+      <div class="card-body">
+        <nav class="nav">
+          <a href="#"><span>🏠</span> <span>Home</span></a>
+          <a href="#"><span👥></span> <span>Friends</span></a>
+          <a href="#"><span>👨‍👩‍👧‍👦</span> <span>Groups</span></a>
+          <a href="#"><span>🎥</span> <span>Reels</span></a>
+          <a href="#"><span>🛒</span> <span>Marketplace</span></a>
+          <a href="#"><span>⭐</span> <span>Favorites</span></a>
+        </nav>
+        <div class="divider"></div>
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Shortcuts</div>
+          <div class="nav">
+            <a href="#"><span>💼</span> <span>Job seekers</span></a>
+            <a href="#"><span>🎮</span> <span>Gamers unite</span></a>
+            <a href="#"><span>📚</span> <span>Study zone</span></a>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Feed column -->
+    <section>
+      <!-- Composer -->
+      <div class="card" id="composerCard">
+        <div class="card-header">Create post</div>
+        <div class="card-body">
+          <div class="composer">
+            <div class="avatar">S</div>
+            <textarea id="postText" placeholder="What's on your mind?"></textarea>
+          </div>
+          <div class="composer-actions">
+            <div style="display:flex; gap:8px; flex-wrap:wrap">
+              <span class="chip">📷 Add photo</span>
+              <span class="chip">🎥 Add video</span>
+              <span class="chip">😊 Feeling</span>
+              <span class="chip">📍 Check in</span>
+            </div>
+            <button class="btn primary" id="postBtn">Post</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed filters -->
+      <div class="card" style="margin-top:16px">
+        <div class="card-body">
+          <div class="filters">
+            <button class="btn" data-filter="all">All</button>
+            <button class="btn" data-filter="photos">Photos</button>
+            <button class="btn" data-filter="text">Text</button>
+            <button class="btn" data-filter="liked">Liked</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed list -->
+      <div class="card" id="feedCard">
+        <div class="card-header">Feed</div>
+        <div class="post-list" id="postList">
+          <!-- Posts rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Right column: contacts -->
+    <aside class="contacts card">
+      <div class="card-header">Contacts</div>
+      <div class="card-body" id="contactsList">
+        <div class="item">
+          <div style="display:flex; align-items:center; gap:10px">
+            <div class="avatar" style="height:32px;width:32px;font-size:14px">A</div>
+            <div>Arjun</div>
+          </div>
+          <div class="presence online"></div>
+        </div>
+        <div class="item">
+          <div style="display:flex; align-items:center; gap:10px">
+            <div class="avatar" style="height:32px;width:32px;font-size:14px">N</div>
+            <div>Nisha</div>
+          </div>
+          <div class="presence away"></div>
+        </div>
+        <div class="item">
+          <div style="display:flex; align-items:center; gap:10px">
+            <div class="avatar" style="height:32px;width:32px;font-size:14px">R</div>
+            <div>Ravi</div>
+          </div>
+          <div class="presence busy"></div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Templates -->
+  <template id="postTemplate">
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar">U</div>
+        <div>
+          <div class="post-name">User</div>
+          <div class="post-meta">Just now · Public</div>
+        </div>
+      </div>
+      <div class="post-content"></div>
+      <div class="post-media" style="display:none"></div>
+      <div class="post-actions">
+        <button class="icon-btn likeBtn">👍 Like <span class="likeCount">0</span></button>
+        <button class="icon-btn commentToggle">💬 Comment</button>
+        <button class="icon-btn shareBtn">↗ Share</button>
+      </div>
+      <div class="comments" style="display:none">
+        <div class="add-comment">
+          <div class="avatar" style="height:32px;width:32px;font-size:14px">S</div>
+          <input type="text" placeholder="Write a comment..."/>
+          <button class="btn">Post</button>
+        </div>
+        <div class="comment-list"></div>
+      </div>
+    </article>
+  </template>
+
+  <!-- Scripts -->
+  <script>
+    // In-memory store
+    const state = {
+      posts: [
+        {
+          id: crypto.randomUUID(),
+          author: "Nisha",
+          avatar: "N",
+          content: "Weekend trip to Varanasi! The ghats at sunrise were unreal.",
+          createdAt: Date.now() - 1000*60*60*5,
+          likes: 12,
+          liked: false,
+          type: "text",
+          comments: [
+            {author:"Ravi", avatar:"R", text:"Sounds amazing! Got photos?", createdAt: Date.now() - 1000*60*60*4}
+          ]
+        },
+        {
+          id: crypto.randomUUID(),
+          author: "Arjun",
+          avatar: "A",
+          content: "New chai spot in Sadar—masala level: perfect.",
+          createdAt: Date.now() - 1000*60*60*2,
+          likes: 7,
+          liked: true,
+          type: "text",
+          comments: []
+        }
+      ],
+      filter: "all"
+    };
+
+    const postListEl = document.getElementById("postList");
+    const postTemplate = document.getElementById("postTemplate");
+    const postBtn = document.getElementById("postBtn");
+    const postText = document.getElementById("postText");
+
+    const filters = document.querySelectorAll(".filters .btn");
+    filters.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        state.filter = btn.dataset.filter;
+        renderFeed();
+      });
+    });
+
+    postBtn.addEventListener("click", ()=>{
+      const text = postText.value.trim();
+      if(!text){ alert("Write something first."); return; }
+      const newPost = {
+        id: crypto.randomUUID(),
+        author: "Satvik",
+        avatar: "S",
+        content: text,
+        createdAt: Date.now(),
+        likes: 0,
+        liked: false,
+        type: "text",
+        comments: []
+      };
+      state.posts.unshift(newPost);
+      postText.value = "";
+      renderFeed();
+      // Smooth scroll to new post
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    function timeAgo(ts){
+      const s = Math.floor((Date.now()-ts)/1000);
+      const units = [
+        {label:"year", secs:31536000},
+        {label:"month", secs:2592000},
+        {label:"day", secs:86400},
+        {label:"hour", secs:3600},
+        {label:"min", secs:60}
+      ];
+      for(const u of units){
+        const v = Math.floor(s/u.secs);
+        if(v>=1) return `${v} ${u.label}${v>1?"s":""} ago`;
+      }
+      return "Just now";
+    }
+
+    function renderFeed(){
+      postListEl.innerHTML = "";
+      let posts = [...state.posts];
+
+      // Apply filters
+      if(state.filter === "photos"){
+        posts = posts.filter(p=>p.type==="photo");
+      } else if(state.filter === "text"){
+        posts = posts.filter(p=>p.type==="text");
+      } else if(state.filter === "liked"){
+        posts = posts.filter(p=>p.liked);
+      }
+
+      // Render
+      posts.forEach(p=>{
+        const node = postTemplate.content.cloneNode(true);
+        const article = node.querySelector(".post");
+        article.dataset.id = p.id;
+
+        node.querySelector(".post-name").textContent = p.author;
+        node.querySelector(".avatar").textContent = p.avatar;
+        node.querySelector(".post-meta").textContent = `${timeAgo(p.createdAt)} · Public`;
+        node.querySelector(".post-content").textContent = p.content;
+
+        const likeBtn = node.querySelector(".likeBtn");
+        const likeCount = node.querySelector(".likeCount");
+        likeCount.textContent = p.likes;
+        if(p.liked) likeBtn.classList.add("active");
+
+        likeBtn.addEventListener("click", ()=>{
+          p.liked = !p.liked;
+          p.likes += p.liked ? 1 : -1;
+          likeCount.textContent = p.likes;
+          likeBtn.classList.toggle("active", p.liked);
+        });
+
+        const commentsEl = node.querySelector(".comments");
+        const commentToggle = node.querySelector(".commentToggle");
+        const commentList = node.querySelector(".comment-list");
+        const addCommentInput = node.querySelector(".add-comment input");
+        const addCommentBtn = node.querySelector(".add-comment .btn");
+
+        commentToggle.addEventListener("click", ()=>{
+          const show = commentsEl.style.display !== "block";
+          commentsEl.style.display = show ? "block" : "none";
+        });
+
+        function renderComments(){
+          commentList.innerHTML = "";
+          p.comments.forEach(c=>{
+            const row = document.createElement("div");
+            row.className = "comment";
+            row.innerHTML = `
+              <div class="avatar" style="height:32px;width:32px;font-size:14px">${c.avatar}</div>
+              <div class="bubble">
+                <div class="author">${c.author} · <span style="color:var(--muted); font-weight:400">${timeAgo(c.createdAt)}</span></div>
+                <div>${c.text}</div>
+              </div>
+            `;
+            commentList.appendChild(row);
+          });
+        }
+        renderComments();
+
+        addCommentBtn.addEventListener("click", ()=>{
+          const text = addCommentInput.value.trim();
+          if(!text) return;
+          p.comments.push({author:"Satvik", avatar:"S", text, createdAt: Date.now()});
+          addCommentInput.value = "";
+          renderComments();
+        });
+
+        const shareBtn = node.querySelector(".shareBtn");
+        shareBtn.addEventListener("click", async ()=>{
+          const shareData = { title:"SocialHub", text:p.content.slice(0,120), url: location.href };
+          try{
+            if(navigator.share){
+              await navigator.share(shareData);
+            } else {
+              await navigator.clipboard.writeText(p.content);
+              alert("Post content copied to clipboard.");
+            }
+          } catch(e){
+            alert("Could not share right now.");
+          }
+        });
+
+        postListEl.appendChild(node);
+      });
+
+      if(posts.length===0){
+        const empty = document.createElement("div");
+        empty.style.padding = "24px";
+        empty.style.color = "var(--muted)";
+        empty.textContent = "No posts match this filter yet.";
+        postListEl.appendChild(empty);
+      }
+    }
+
+    // Init
+    renderFeed();
+
+    // Mock search
+    document.getElementById("searchBtn").addEventListener("click", ()=>{
+      alert("Search is a demo. Hook this to your backend later.");
+    });
+  </script>
+</body>
+</html>

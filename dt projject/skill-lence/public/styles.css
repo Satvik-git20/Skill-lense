@@ -1,0 +1,94 @@
+* { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif }
+body { margin: 0; padding: 0; background: #f4f6f8; color: #0b2535 }
+header { background: linear-gradient(90deg,#3b82f6,#06b6d4); color: white; padding: 24px }
+header h1 { margin: 0 0 6px 0 }
+main { padding: 20px; max-width: 1200px; margin: 0 auto }
+label { display: block; margin: 8px 0; font-weight: 500 }
+input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px }
+.btn-primary { padding: 10px 16px; border: none; background: #2563eb; color: white; border-radius: 4px; cursor: pointer; font-weight: 500 }
+.btn-primary:hover { background: #1d4ed8 }
+.btn-secondary { padding: 8px 12px; border: none; background: #64748b; color: white; border-radius: 4px; cursor: pointer }
+.btn-logout { padding: 8px 12px; background: #dc2626; color: white; border: none; cursor: pointer; border-radius: 4px; margin-left: auto }
+footer { padding: 12px; text-align:center; font-size:12px; color:#475569 }
+
+/* Auth Panel */
+.auth-panel { background: white; border-radius: 8px; padding: 32px; max-width: 420px; margin: 40px auto; box-shadow: 0 4px 12px rgba(11,37,53,0.08) }
+.auth-tabs { display: flex; gap: 8px; margin: 16px 0 24px }
+.auth-tab { padding: 8px 16px; border: 1px solid #cbd5e1; background: white; cursor: pointer; border-radius: 4px; font-weight: 500 }
+.auth-tab.active { background: #eef2ff; border-color: #9ca3ff; color: #3b82f6 }
+.auth-form { display: none }
+.auth-form.visible { display: block }
+.auth-form label { margin: 12px 0 }
+.error { color: #dc2626; font-size: 12px; margin-top: 8px }
+.notice { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin: 12px 0; border-radius: 4px; font-size: 13px }
+
+/* Dashboard */
+.dashboard-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap }
+.nav-tab { padding: 8px 12px; border: 1px solid #cbd5e1; background: white; cursor: pointer; border-radius: 4px; transition: all .2s }
+.nav-tab.active { background: #3b82f6; color: white; border-color: #3b82f6 }
+.dashboard-panel { animation: slideIn .3s ease }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0 }
+.stat-card { background: white; padding: 16px; border-radius: 6px; border: 1px solid #e6eef8; text-align: center; box-shadow: 0 2px 4px rgba(11,37,53,0.04) }
+.stat-label { display: block; font-size: 12px; color: #64748b; font-weight: 500 }
+.stat-value { display: block; font-size: 28px; font-weight: bold; color: #3b82f6; margin-top: 6px }
+.results-list { margin-top: 16px }
+.result-item { background: white; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 4px solid #3b82f6; display: flex; justify-content: space-between; align-items: center }
+.date { font-size: 12px; color: #94a3b8 }
+
+/* Developer Profile */
+.profile-card { background: white; padding: 16px; border-radius: 6px; border: 1px solid #e6eef8 }
+.profile-links { margin: 8px 0 }
+.profile-links a { display: inline-block; margin-right: 12px; color: #3b82f6; text-decoration: none; font-size: 13px }
+.profile-links a:hover { text-decoration: underline }
+.skill-score-card { background: linear-gradient(135deg,#3b82f6,#06b6d4); color: white; padding: 20px; border-radius: 6px; margin: 12px 0 }
+.score-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; overflow: hidden; margin: 8px 0 }
+.score-fill { height: 100%; background: white; transition: width .4s ease }
+.strengths-weaknesses { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px }
+.box { background: white; padding: 12px; border-radius: 6px; border: 1px solid #e6eef8 }
+.box h4 { margin: 0 0 8px; font-size: 14px }
+.box ul { margin: 0; padding-left: 16px }
+.box li { font-size: 12px; margin: 4px 0; color: #475569 }
+
+/* Recruiter Search */
+.search-bar { display: flex; gap: 8px; margin: 16px 0 }
+.search-bar input { flex: 1 }
+.search-bar button { min-width: 100px }
+.dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0 }
+.candidates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px }
+.candidate-card { background: white; padding: 12px; border-radius: 6px; border: 1px solid #e6eef8; cursor: pointer; transition: all .2s }
+.candidate-card:hover { box-shadow: 0 8px 16px rgba(11,37,53,0.08); transform: translateY(-2px) }
+.candidate-card h4 { margin: 0 0 6px; font-size: 14px }
+.candidate-card p { margin: 4px 0; font-size: 12px; color: #475569 }
+.candidate-card a { display: block; font-size: 12px; color: #3b82f6; text-decoration: none; margin-top: 6px }
+.candidate-score { background: #f0f9ff; padding: 12px; border-radius: 4px; margin: 8px 0 }
+
+/* Modal */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center }
+.modal.visible { display: flex }
+.modal-content { background: white; padding: 24px; border-radius: 8px; max-width: 400px; width: 90%; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2) }
+.close { position: absolute; top: 12px; right: 12px; font-size: 24px; cursor: pointer; color: #94a3b8 }
+
+/* Animations */
+.lottie-wrap { position: absolute; top: 18px; right: 18px; width: 140px; height: 140px; pointer-events: none }
+.lottie-container { width: 100%; height: 100%; opacity: 0; transform: translateY(-6px); transition: opacity 420ms ease, transform 420ms cubic-bezier(.2,.9,.2,1) }
+.lottie-container.visible { opacity: 1; transform: translateY(0) }
+
+.auth-tab { transition: background .18s ease, transform .12s ease }
+.auth-tab:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(10,20,40,0.06) }
+
+body { animation: pageFadeIn .36s ease both }
+@keyframes pageFadeIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+@keyframes slideIn { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+header { position: relative }
+
+/* Header decorative icon (triple circles) */
+.header-decor { position: absolute; top: 12px; right: 16px; width: 120px; height: 36px; pointer-events: none }
+.header-decor svg { display: block; width: 100%; height: 100%; }
+
+/* subtle pulse on the outer circles */
+.header-decor circle { transform-origin: center; animation: float 3.6s ease-in-out infinite; }
+.header-decor circle:nth-child(1) { animation-delay: 0s }
+.header-decor circle:nth-child(2) { animation-delay: 0.18s }
+.header-decor circle:nth-child(3) { animation-delay: 0.36s }
+@keyframes float { 0% { transform: translateY(0) scale(1) } 50% { transform: translateY(-3px) scale(1.03) } 100% { transform: translateY(0) scale(1) } }

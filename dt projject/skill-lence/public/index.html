@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill lence</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Skill lence</h1>
+    <p>Connect developers, recruiters and students — LinkedIn & LeetCode links + student tests</p>
+  </header>
+  <div class="lottie-wrap">
+    <div id="lottie" class="lottie-container" aria-hidden="true"></div>
+  </div>
+
+  <main>
+    <!-- Auth Panel -->
+    <section id="auth-panel" class="auth-panel">
+      <h2>Welcome to Skill lence</h2>
+      <p>Unified skill aggregation for students, developers, and recruiters</p>
+      
+      <div class="auth-tabs">
+        <button id="login-tab" class="auth-tab active">Login</button>
+        <button id="signup-tab" class="auth-tab">Sign Up</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form visible">
+        <label>Email: <input id="login-email" type="email" required /></label>
+        <label>Password: <input id="login-pass" type="password" required /></label>
+        <button type="submit" class="btn-primary">Login</button>
+        <div id="login-error" class="error"></div>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signup-form" class="auth-form">
+        <label>Full Name: <input id="signup-name" required /></label>
+        <label>Email: <input id="signup-email" type="email" required /></label>
+        <label>Password: <input id="signup-pass" type="password" required /></label>
+        <label>I am a:
+          <select id="signup-role" required>
+            <option value="">-- Select --</option>
+            <option value="student">Student</option>
+            <option value="developer">Developer</option>
+            <option value="recruiter">Recruiter</option>
+          </select>
+        </label>
+        <button type="submit" class="btn-primary">Sign Up</button>
+        <div id="signup-error" class="error"></div>
+      </form>
+    </section>
+
+    <!-- Demo notice -->
+    <div id="demo-notice" class="notice">
+      <strong>Demo account:</strong> Use <code>alice@skilllence.local / test123</code> (student), <code>carol@skilllence.local / test123</code> (developer), or <code>eve@skilllence.local / test123</code> (recruiter)
+    </div>
+  </main>
+
+  <footer>
+    <small>Skill lence &middot; Unified Skill Aggregation Platform</small>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.13/lottie.min.js"></script>
+  <script src="/app-auth.js"></script>
+</body>
+</html>

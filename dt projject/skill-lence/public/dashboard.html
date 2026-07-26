@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill lence — Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Skill lence</h1>
+    <p>Connect developers, recruiters and students — unified skill tracking</p>
+    <button id="logout-btn" class="header-btn">Logout</button>
+  </header>
+
+  <div class="lottie-wrap">
+    <div id="lottie" class="lottie-container" aria-hidden="true"></div>
+  </div>
+
+  <main id="dashboard" style="display:none">
+    <nav class="dashboard-nav">
+      <button class="nav-tab active" data-role="student">Student</button>
+      <button class="nav-tab" data-role="developer">Developer</button>
+      <button class="nav-tab" data-role="recruiter">Recruiter</button>
+    </nav>
+
+    <!-- STUDENT DASHBOARD -->
+    <section id="student-dash" class="dashboard-panel">
+      <h2>Your Learning Progress</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Tests Taken</span>
+          <span class="stat-value" id="student-attempts">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Average Score</span>
+          <span class="stat-value" id="student-avg">0%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Best Score</span>
+          <span class="stat-value" id="student-best">0%</span>
+        </div>
+      </div>
+      <div id="student-results" class="results-list"></div>
+    </section>
+
+    <!-- DEVELOPER DASHBOARD -->
+    <section id="developer-dash" class="dashboard-panel" style="display:none">
+      <h2>Your Skill Analytics</h2>
+      <div class="profile-card">
+        <h3 id="dev-name"></h3>
+        <div class="profile-links">
+          <a id="dev-linkedin-link" target="_blank" style="display:none">LinkedIn</a>
+          <a id="dev-leetcode-link" target="_blank" style="display:none">LeetCode</a>
+        </div>
+        <button id="dev-edit-profile" class="btn-secondary">Edit Profile</button>
+      </div>
+      <div class="skill-score-card">
+        <span class="label">Overall Skill Score</span>
+        <div class="score-bar">
+          <div class="score-fill" id="dev-skill-bar" style="width:0%"></div>
+        </div>
+        <span class="value" id="dev-skill-score">0%</span>
+      </div>
+      <div class="strengths-weaknesses">
+        <div class="box">
+          <h4>Strengths</h4>
+          <ul id="dev-strengths"></ul>
+        </div>
+        <div class="box">
+          <h4>Areas for Improvement</h4>
+          <ul id="dev-areas"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECRUITER DASHBOARD -->
+    <section id="recruiter-dash" class="dashboard-panel" style="display:none">
+      <h2>Candidate Search</h2>
+      <div class="search-bar">
+        <input id="recruiter-search" placeholder="Search developers by name or profile..." />
+        <button id="recruiter-search-btn">Search</button>
+      </div>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <span class="stat-label">Total Developers</span>
+          <span class="stat-value" id="recruiter-total-devs">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Total Students</span>
+          <span class="stat-value" id="recruiter-total-students">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Platform Avg. Score</span>
+          <span class="stat-value" id="recruiter-avg-score">0%</span>
+        </div>
+      </div>
+      <div id="recruiter-candidates" class="candidates-grid"></div>
+    </section>
+  </main>
+
+  <!-- Modal for editing developer profile -->
+  <div id="profile-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <span class="close" id="profile-modal-close">&times;</span>
+      <h3>Update Your Profile</h3>
+      <label>LinkedIn: <input id="modal-linkedin" placeholder="https://linkedin.com/in/yourname" /></label>
+      <label>LeetCode: <input id="modal-leetcode" placeholder="https://leetcode.com/yourname" /></label>
+      <button id="profile-save-btn" class="btn-primary">Save</button>
+    </div>
+  </div>
+
+  <!-- Candidate detail modal (for recruiters) -->
+  <div id="candidate-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <span class="close" id="candidate-modal-close">&times;</span>
+      <div id="candidate-detail"></div>
+    </div>
+  </div>
+
+  <footer>
+    <small>Skill lence — Unified Skill Aggregation Platform</small>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.13/lottie.min.js"></script>
+  <script src="/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill lence — Admin</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Skill lence — Admin</h1>
+  </header>
+  <div class="header-decor" aria-hidden="true">
+    <svg viewBox="0 0 120 36" width="120" height="36" xmlns="http://www.w3.org/2000/svg" role="img">
+      <circle cx="24" cy="18" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.95" />
+      <circle cx="54" cy="18" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85" />
+      <circle cx="84" cy="18" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.75" />
+    </svg>
+  </div>
+  <main>
+    <section>
+      <h2>Login</h2>
+      <label>Email: <input id="admin-email" /></label>
+      <label>Password: <input id="admin-pass" type="password" /></label>
+      <button id="admin-login">Login</button>
+      <div id="admin-status"></div>
+    </section>
+
+    <section>
+      <h2>Create Quiz</h2>
+      <label>Title: <input id="quiz-title" /></label>
+      <div id="questions-area">
+        <p>Add questions in JSON format or use the sample below.</p>
+        <textarea id="quiz-json" rows="10" style="width:100%;">[
+  { "text": "Which data structure uses LIFO?", "choices": ["Queue","Stack","Tree","Graph"], "correctIndex": 1 }
+]</textarea>
+      </div>
+      <button id="create-quiz">Create Quiz</button>
+      <div id="create-result"></div>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+  <p style="padding:12px; font-size:12px; color:#666">Default admin: <strong>admin@skilllence.local</strong> / <strong>admin123</strong></p>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill lence — AI Tests</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>AI Tests</h1>
+    <p>Generate and run AI-style coding tests for many languages.</p>
+  </header>
+
+  <main>
+    <section class="ai-panel">
+      <label>Language:
+        <select id="ai-language">
+          <option value="python">Python</option>
+          <option value="javascript">JavaScript</option>
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+          <option value="go">Go</option>
+        </select>
+      </label>
+      <label>Difficulty:
+        <select id="ai-difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <button id="ai-generate" class="btn-primary">Generate Test</button>
+
+      <div id="ai-test" style="margin-top:16px"></div>
+
+      <div id="ai-editor-area" style="display:none; margin-top:12px">
+        <label>Your Code:</label>
+        <textarea id="ai-code" rows="12" style="width:100%"></textarea>
+        <div style="margin-top:8px">
+          <button id="ai-submit" class="btn-primary">Submit Code</button>
+        </div>
+      </div>
+
+      <div id="ai-result" style="margin-top:12px"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>AI Tests — uses Judge0 if configured. Otherwise runs a safe mock evaluation.</small>
+  </footer>
+
+  <script src="/ai.js"></script>
+</body>
+</html>
