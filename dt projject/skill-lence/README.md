@@ -46,7 +46,7 @@ After running `npm run seed`, use these credentials:
 - **Student**: alice@skilllence.local / test123
 - **Developer**: carol@skilllence.local / test123
 - **Recruiter**: eve@skilllence.local / test123
-- **Admin**: admin@skilllence.local / admin123
+- **Admin**: admin@skilllence.local — password set via `SEED_ADMIN_PASSWORD` env var, or a random one printed once at first startup
 
 ## Scripts
 
@@ -106,7 +106,7 @@ skill-lence/
 ## Environment Variables
 
 - `PORT` — Server port (default: 3000)
-- `JWT_SECRET` — JWT signing secret (default: dev-secret-change-me, **change for production**)
+- `JWT_SECRET` — **required** JWT signing secret. Generate: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 - `NODE_ENV` — development or production
 
 ## Next Steps (Production)
@@ -124,7 +124,7 @@ skill-lence/
 
 1. Start the server
 2. Open http://localhost:3000/admin.html
-3. Login with admin@skilllence.local / admin123
+3. Login with admin@skilllence.local and the password printed at first startup (or set `SEED_ADMIN_PASSWORD`)
 4. Create quizzes with custom questions
 
 ## Notes

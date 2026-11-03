@@ -8,7 +8,11 @@ const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET === 'dev-secret-change-me') {
+  console.error('[fatal] Provide a strong JWT_SECRET env var ("dev-secret-change-me" is not allowed).');
+  process.exit(1);
+}
 
 const JUDGE0_URL = process.env.JUDGE0_URL || null; // optional Judge0 endpoint for running code
 const JUDGE0_KEY = process.env.JUDGE0_KEY || null; // optional token
@@ -76,7 +80,7 @@ app.post('/api/register', (req, res) => {
   if (!['student', 'developer', 'recruiter'].includes(role)) return res.status(400).json({ error: 'Invalid role' });
   const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
   if (existing) return res.status(400).json({ error: 'User already exists' });
-  const passwordHash = bcrypt.hashSync(password, 8);
+  const passwordHash = bcrypt.hashSync(password, 12);
   const info = db.prepare('INSERT INTO users (name, email, passwordHash, role) VALUES (?,?,?,?)').run(name || '', email, passwordHash, role);
   const userId = info.lastInsertRowid;
   const token = jwt.sign({ id: userId, email, role, name: name || '' }, JWT_SECRET, { expiresIn: '7d' });
@@ -152,9 +156,16 @@ app.get('/api/profile/:userId', (req, res) => {
 function ensureSampleData() {
   const admin = db.prepare("SELECT id FROM users WHERE role='admin'").get();
   if (!admin) {
-    const passwordHash = bcrypt.hashSync('admin123', 8);
+    // Password must come from the environment, or a strong random value is
+    // generated and printed once. The old hardcoded 'admin123' is gone.
+    const adminPassword = process.env.SEED_ADMIN_PASSWORD || require('crypto').randomBytes(16).toString('hex');
+    const passwordHash = bcrypt.hashSync(adminPassword, 12);
     db.prepare('INSERT INTO users (name, email, passwordHash, role) VALUES (?,?,?,?)').run('Admin', 'admin@skilllence.local', passwordHash, 'admin');
-    console.log('Created default admin: admin@skilllence.local / admin123');
+    if (process.env.SEED_ADMIN_PASSWORD) {
+      console.log('Created admin: admin@skilllence.local (password from SEED_ADMIN_PASSWORD)');
+    } else {
+      console.log(`[seed] one-time admin password for admin@skilllence.local: ${adminPassword}`);
+    }
   }
   const q = db.prepare('SELECT id FROM quizzes LIMIT 1').get();
   if (!q) {
